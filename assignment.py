@@ -170,7 +170,7 @@ while True:
             email = input("Email: ")
             address = input("Address: ")
             pa = input("Password: ")
-            accType = input("Savings Account or Current Account (sv/cu): ")
+            accType = input("Savings Account or Current Account (sv/cu)?: ")
             accNo = f"{email[:3]+name[:3]}"
             if accType == "sv":
                 currentUser = SavingsAccount(
@@ -247,37 +247,59 @@ while True:
                 print("Invalid Option")
 
         elif currentUser.userType == "Admin":
-            print("1. Delete an user account")
-            print("2. See all user accounts")
-            print("3. Show total balance of the bank")
-            print("4. Show total loan amount of the bank")
-            print("5. On or Off the bank")
-            print("6. Logout\n")
+            print("1. Create an account")
+            print("2. Delete an account")
+            print("3. See all accounts")
+            print("4. Show total balance of the bank")
+            print("5. Show total loan amount of the bank")
+            print("6. On or Off the bank")
+            print("7. Logout\n")
 
             op = int(input("Choose Option: "))
 
             if op == 1:
-                accNo = input("Enter acc no to delete: ")
-                currentUser.deleteAccount(accNo)
+                print("Create a new account:")
+                name = input("Enter account name: ")
+                email = input("Enter email: ")
+                address = input("Your address: ")
+                pa = input("Password: ")
+                accType = input(
+                    "Savings Account or Current Account (sv/cu)?: ")
+                accNo = f"{email[:3]+name[:3]}"
+                if accType == "sv":
+                    SavingsAccount(
+                        name, email, address, accNo, pa, "User")
+                elif accType == "cu":
+                    CurrentAccount(
+                        name, email, address, accNo, pa, "User")
 
-            elif op == 2:
-                print("All accounts of the bank.\n")
-                currentUser.seeAllAccOfTheBank()
+            if op == 2:
+                accNo = input("Enter acc no to delete: ")
+                if accNo == currentUser.accNo:
+                    currentUser.deleteAccount(accNo)
+                    currentUser = None
+                    print("Deleted your own account success")
+                else:
+                    currentUser.deleteAccount(accNo)
 
             elif op == 3:
-                currentUser.showTotalBankBalance()
+                print(f"All accounts of the bank:\n")
+                currentUser.seeAllAccOfTheBank()
 
             elif op == 4:
-                currentUser.showTotalLoanOfTheBank()
+                currentUser.showTotalBankBalance()
 
             elif op == 5:
+                currentUser.showTotalLoanOfTheBank()
+
+            elif op == 6:
                 onOrOff = input("Need to Bank On or Off Type( on / Off )?: ")
                 if onOrOff == "on":
                     currentUser.onOrOff("ON")
                 else:
                     currentUser.onOrOff("OFF")
 
-            elif op == 6:
+            elif op == 7:
                 currentUser = None
 
             else:
